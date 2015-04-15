@@ -1,0 +1,70 @@
+// +build !solution
+
+// Leave an empty line above this comment.
+package main
+
+import (
+	"fmt"
+	"os"
+    "flag"
+	"/config"
+    
+)
+const txtpath,gobpath string ="config.txt","config.gob"
+//const sep string="---------------------------------------------"
+func main() {
+    //flags fom commandline
+    
+
+cfg1 := config.Configuration{1, "hello"}
+if err := cfg1.Save(); err != nil {
+fmt.Println(err)
+os.Exit(1)
+}
+cfg2 := config.Configuration{2, "lab"}
+if err := cfg2.SaveGob(); err != nil {
+fmt.Println(err)
+os.Exit(1)
+}
+fmt.Println(cfg1)
+fmt.Println(cfg2)
+
+    mnum_ptr:=flag.Int("Number",0,"Error. Check syntax")
+    mnam_ptr:=flag.String("Name","anonymous","Error. Check syntax")
+    flag.Parse()
+    cfg := config.Configuration{*mnum_ptr, *mnam_ptr}
+	
+    fmt.Printf("Number: %d and Name: %s from input or default\n ",cfg.Number,cfg.Name)
+    //saves
+    err:=cfg.Save()
+    err=cfg.SaveGob()
+    Errcheck(err)
+    //test config.txt
+    loadconfig,err1:=config.LoadConfig(txtpath)
+    Errcheck(err1)
+   //
+   TestEqual("Load Config.txt",cfg,*loadconfig)
+    //test config.gob
+  
+    loadGOBconfig,err2:=config.LoadGobConfig(gobpath)
+   
+    Errcheck(err2)
+ //fmt.Printf("NAAAME %s\n",loadGOBconfig.Name)
+   TestEqual("Load Gobconfig",cfg,*loadGOBconfig)
+    
+
+}
+func Errcheck( err error){
+	if err != nil {
+        fmt.Printf("error?!")
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+func TestEqual(str string,runTConf config.Configuration, loadConf config.Configuration) {
+
+	b := loadConf.Name == runTConf.Name && loadConf.Number == runTConf.Number
+	fmt.Printf("%s is Working:  %t \n", str, b)
+	fmt.Printf("loaded%s: %+v\n%18sVS\nstored config:  %+v\n", str, loadConf, " ", runTConf)
+
+}

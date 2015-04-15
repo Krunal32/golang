@@ -1,0 +1,4 @@
+CC=gcc 
+all:
+main.c: maimn.c l1.c
+    gcc main.c l1.c -o main 

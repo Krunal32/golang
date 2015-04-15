@@ -1,0 +1,8 @@
+#Makefile for simp_rw.c
+obj-m := simp_rw.o
+	KDIR := /lib/modules/$(shell uname -r)/build
+	PWD := $(shell pwd)
+all:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) clean

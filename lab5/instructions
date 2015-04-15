@@ -1,0 +1,12 @@
+Commands for main.c: 
+
+compile with:  gcc -pthread -o main main.c
+run command:   ./main --with-protection --threads=100 --accesses=1000       (threadsafe)
+               ./main --without-protection -threads=100 -accesses=1000       (not thread safe)
+                ./main --assembly -threads=100 -accesses=1000       (with inline assembly)
+ 
+-------------------
+Commands for main.java: 
+                will compile to two classfiles with:  javac Main.java
+                run:   java Main --with-protection --threads=100 --accesses=1000  (thread-safe)            
+                       java Main --without-protection --threads=100 --accesses=1000 (not-threadsafe)
